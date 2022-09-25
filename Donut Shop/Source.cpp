@@ -2,6 +2,7 @@
 //This program is a pos system for a donut shop that calculates total sale with tax, finds change from amount paid, and tells the user how to give the change
 #include <iostream>
 #include <iomanip>
+#include <math.h>
 using namespace std;
 
 int main() {
@@ -42,7 +43,7 @@ int main() {
 
 		//Calculating what customer owes
 		sale = (ndozen * ndozen_price) + (nextra * normal_price) + (fdozen * fdozen_price) + (fextra * fancy_price) + (aFritters * fritter_price);
-		actual_total = 0.00;
+		
 		actual_total = sale + (sale * tax_rate);
 
 		//Says amount owed by customer
@@ -69,8 +70,11 @@ int main() {
 		//Calculating and displaying change
 		change = paid - actual_total;
 
+		//Rounding to fix issue I was having
+		change = ceil(change * 100.0) / 100.0;
+
 		//This variable will be used to make calculating coins easier
-		int cents;
+		int cents = change * 100;
 
 		//For no change
 		if (change == 0) {
@@ -78,8 +82,9 @@ int main() {
 		}
 		//For change
 		else if (change > 0) {
-			dollars = change / 1;
-			
+
+			dollars = cents / 100;
+
 			//Accounting for change amounts possibly causing too many digits
 			if (dollars == 0) {
 				cout << setprecision(2) << "Change owed is $" << change << " - ";
@@ -90,23 +95,14 @@ int main() {
 				if (dollars == 1) cout << dollars << " dollar, ";
 				else cout << dollars << " dollars, ";
 			}
-			change = change - dollars;
-			cents = change * 100;
+
+			cents = cents % 100;
 			quarters = cents / 25;
-			
-			//Kept losing a penny during translation, this is my (probably flawed) fix
-			if (quarters >= 2) {
-				cents = cents++;
-			}
-			
 			cents = cents % 25;
-			cout << cents << endl;
 			dimes = cents / 10;
 			cents = cents % 10;
-			cout << cents << endl;
 			nickels = cents / 5;
 			cents = cents % 5;
-			cout << cents << endl;
 
 			pennies = cents;
 
