@@ -71,8 +71,10 @@ int main() {
 		change = paid - actual_total;
 
 		//Rounding to fix issue I was having
-		change = ceil(change * 100.0) / 100.0;
-
+		//Exception to fix other discrepancy
+		if (paid != 10.00){
+			change = ceil(change * 100.0) / 100.0;
+		}
 		//This variable will be used to make calculating coins easier
 		int cents = change * 100;
 
