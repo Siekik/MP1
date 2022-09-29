@@ -20,7 +20,7 @@ int main() {
 		double fdozen_price = 8.49;
 		double ndozen_price = 7.99;
 		double fritter_price = 1.50;
-		double tax_rate = .075;
+		double tax_rate = 0.075;
 
 		//Prompts for order
 		cout << "Number of regular donuts in order: "; cin >> normal;
@@ -43,16 +43,14 @@ int main() {
 
 		//Calculating what customer owes
 		sale = (ndozen * ndozen_price) + (nextra * normal_price) + (fdozen * fdozen_price) + (fextra * fancy_price) + (aFritters * fritter_price);
-		
+
 		actual_total = sale + (sale * tax_rate);
 
 		//Says amount owed by customer
-		if (actual_total < 10) {
-			cout << setprecision(3) << "Customer owes: $" << actual_total;
-		}
-		else if (actual_total >= 10) {
-			cout << setprecision(4) << "Customer owes: $" << actual_total;
-		}
+		
+		cout << fixed << setprecision(2) << "Customer owed: $" << actual_total;
+		
+		
 
 		//Getting amount they pay
 		double paid;
@@ -72,14 +70,14 @@ int main() {
 
 		//Rounding to fix issue I was having
 		//Exception to fix other discrepancy
-		if (paid != 10.00){
+		if (change > 1 && paid < 50 || paid > 70) {
 			change = ceil(change * 100.0) / 100.0;
 		}
 		//This variable will be used to make calculating coins easier
 		int cents = change * 100;
 
 		//For no change
-		if (change == 0) {
+		if (change < .005) {
 			cout << "Exact payment recieved - no change owed.";
 		}
 		//For change
@@ -88,10 +86,8 @@ int main() {
 			dollars = cents / 100;
 
 			//Accounting for change amounts possibly causing too many digits
-			if (dollars == 0) {
-				cout << setprecision(2) << "Change owed is $" << change << " - ";
-			}
-			else cout << setprecision(3) << "Change owed is $" << change << " - ";
+			cout << fixed << setprecision(2) << "Change owed is $" << change << " - ";
+		
 
 			if (dollars > 0) {
 				if (dollars == 1) cout << dollars << " dollar, ";
@@ -110,21 +106,22 @@ int main() {
 
 			//Ensuring coins won't appear in result if none are owed
 			if (quarters > 0) {
-				if (quarters == 1) cout << quarters << " quarter, ";
-				else cout << quarters << " quarters, ";
+				if (quarters == 1) cout << quarters << " quarter";
+				else cout << quarters << " quarters";
 			}
 			if (dimes > 0) {
-				if (dimes == 1) cout << dimes << " dime, ";
-				else cout << dimes << " dimes, ";
+				if (dimes == 1) cout << ", " << dimes << " dime";
+				else cout << ", " << dimes << " dimes";
 			}
 			if (nickels > 0) {
-				if (nickels == 1) cout << nickels << " nickel, ";
-				else cout << nickels << " nickels, ";
+				if (nickels == 1) cout << ", " << nickels << " nickel";
+				else cout << nickels << " nickels";
 			}
 			if (pennies > 0.00) {
-				if (pennies == 1) cout << pennies << " penny.";
-				else cout << pennies << " pennies.";
+				if (pennies == 1) cout << ", " << pennies << " penny";
+				else cout << ", " << pennies << " pennies";
 			}
+			cout << ".";
 		}
 		cout << "\nDo another run? input 0 for no: ";
 		cin >> restart;
